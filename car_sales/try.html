@@ -1,0 +1,230 @@
+<?php
+session_start();
+
+// Define an array to store validation errors
+$errors = [];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $phoneNumber = $_POST['phoneNumber'];
+    $email = $_POST['email'];
+    $confirmEmail = $_POST['confirmEmail'];
+    $dob = $_POST['dob'];
+    $clientType = $_POST['clientType'];
+    $webTechnologies = $_POST['webTechnologies'];
+    $mailingList = isset($_POST['mailingList']);
+    $termsConditions = isset($_POST['termsConditions']);
+
+    // Validate form data
+    if (empty($firstName)) {
+        $errors[] = "First name is required.";
+    }
+
+    if (empty($lastName)) {
+        $errors[] = "Last name is required.";
+    }
+
+    if (empty($phoneNumber)) {
+        $errors[] = "Phone number is required.";
+    }
+
+    if (empty($email)) {
+        $errors[] = "Email address is required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format.";
+    }
+
+    if (empty($confirmEmail)) {
+        $errors[] = "Confirm email address is required.";
+    } elseif ($email !== $confirmEmail) {
+        $errors[] = "Email addresses do not match.";
+    }
+
+    if (empty($dob)) {
+        $errors[] = "Date of birth is required.";
+    }
+
+    if (empty($clientType)) {
+        $errors[] = "Client's job is required.";
+    }
+
+    if (empty($webTechnologies)) {
+        $errors[] = "Type of cars you always need is required.";
+    }
+
+    if (!$termsConditions) {
+        $errors[] = "Please accept the terms and conditions.";
+    }
+
+    // Check if any errors occurred
+    if (count($errors) === 0) {
+        // Validation passed, proceed with storing the form data in the database or perform other actions
+
+        // Clear any previous form data from the session
+        unset($_SESSION['form_data']);
+
+        // Redirect to a success page or display a success message
+        header("Location: success.php");
+        exit();
+    } else {
+        // Store the errors and form data in session variables
+        $_SESSION['errors'] = $errors;
+        $_SESSION['form_data'] = $_POST;
+
+        // Redirect back to the registration form
+        header("Location: registration-form.php");
+        exit();
+    }
+} else {
+    // Clear any previous form data from the session
+    unset($_SESSION['form_data']);
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+  <style>
+    .error {
+      color: red;
+    }
+    body {
+        background: radial-gradient(white,black);
+}
+
+form {
+  background-color: #f2f2f2;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555555;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+input[type="submit"] {
+  background-color: #555555;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #333333;
+}
+
+.error {
+  color: red;
+}
+
+a {
+  color: #555555;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #333333;
+}
+
+  </style>
+</head>
+<body>
+    <h1 style="text-align: center; padding: 20px;background-color: #ccc; border-radius: 50px;">
+        <a href="home.html"><img src="images/home.png" alt="noo" height="30px" width="30px"></a>JaynCars Registration Process
+    </h1>
+
+    <br>
+  <form id="registrationForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <?php
+    // Check if there are any errors stored in the session
+```php
+    <?php
+    // Check if there are any errors stored in the session
+    if (isset($_SESSION['errors'])) {
+        foreach ($_SESSION['errors'] as $error) {
+            echo '<div class="error">' . $error . '</div>';
+        }
+        unset($_SESSION['errors']);
+    }
+
+    // Retrieve form data from session if available
+    $formData = isset($_SESSION['form_data']) ? $_SESSION['form_data'] : [];
+
+    ?>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" value="<?php echo isset($formData['firstName']) ? $formData['firstName'] : ''; ?>" required>
+    <br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" value="<?php echo isset($formData['lastName']) ? $formData['lastName'] : ''; ?>" required>
+    <br>
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="tel" id="phoneNumber" name="phoneNumber" value="<?php echo isset($formData['phoneNumber']) ? $formData['phoneNumber'] : ''; ?>" required>
+    <br>
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" name="email" value="<?php echo isset($formData['email']) ? $formData['email'] : ''; ?>" required>
+    <br>
+    <label for="confirmEmail">Confirm Email Address:</label>
+    <input type="email" id="confirmEmail" name="confirmEmail" value="<?php echo isset($formData['confirmEmail']) ? $formData['confirmEmail'] : ''; ?>" required>
+    <br>
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" value="<?php echo isset($formData['dob']) ? $formData['dob'] : ''; ?>" required>
+    <br>
+    <label for="clientType">Client's Job:</label>
+    <select id="clientType" name="clientType" required>
+      <option value="">Costumer source of income</option>
+      <option value="frontend" <?php echo isset($formData['clientType']) && $formData['clientType'] == 'frontend' ? 'selected' : ''; ?>>Contract Jobs</option>
+      <option value="backend" <?php echo isset($formData['clientType']) && $formData['clientType'] == 'backend' ? 'selected' : ''; ?>>Self employeement</option>
+      <option value="fullstack" <?php echo isset($formData['clientType']) && $formData['clientType'] == 'fullstack' ? 'selected' : ''; ?>>Civil servant</option>
+    </select>
+    <br>
+    <label for="webTechnologies">Type of cars you always need:</label>
+    <select id="webTechnologies" name="webTechnologies[]" multiple required>
+      <option value="html" <?php echo isset($formData['webTechnologies']) && in_array('html', $formData['webTechnologies']) ? 'selected' : ''; ?>>Twin cab</option>
+      <option value="css" <?php echo isset($formData['webTechnologies']) && in_array('css', $formData['webTechnologies']) ? 'selected' : ''; ?>>Cheap cars</option>
+      <option value="javascript" <?php echo isset($formData['webTechnologies']) && in_array('javascript', $formData['webTechnologies']) ? 'selected' : ''; ?>>Luxury cars</option>
+      <!-- Add more technology options -->
+    </select>
+    <br>
+    <label for="mailingList">Subscribe to Mailing List:</label>
+    <input type="checkbox" id="mailingList" name="mailingList" <?php echo isset($formData['mailingList']) && $formData['mailingList'] ? 'checked' : ''; ?>>
+    <br>
+    <label for="termsConditions">Accept Terms & Conditions:</label>
+    <input type="checkbox" id="termsConditions" name="termsConditions" required <?php echo isset($formData['termsConditions']) && $formData['termsConditions'] ? 'checked' : ''; ?>>
+    <a href="aboutus.html#tc" target="_blank">terms & conditions</a>
+    <br>
+    <div class="g-recaptcha" data-sitekey="6LfDx68pAAAAAH85r_Q8bxdd1NMO9w4GMC3DIufU"></div>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {

@@ -1,0 +1,144 @@
+<!--- 
+    DETAILS
+    GODKNOWS NYANDORO
+    R237561Y
+    LEVEL 1.2
+    HAI
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Form</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.png">
+
+  <style>
+    .error {
+      color: red;
+    }
+    body {
+        background: radial-gradient(white,black);
+}
+
+form {
+  background-color: #f2f2f2;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555555;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+input[type="submit"] {
+  background-color: #555555;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #333333;
+}
+
+.error {
+  color: red;
+}
+
+a {
+  color: #555555;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #333333;
+}
+
+  </style>
+</head>
+<body>
+    <h1 style="text-align: center; padding: 20px;background-color: #ccc; border-radius: 50px;">
+        <a href="home.html"><img src="images/home.png" alt="noo" height="30px" width="30px"></a>JaynCars Registration Process
+    </h1>
+
+    <br>
+  <form id="registrationForm" action="#" method="post">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required>
+    <br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required>
+    <br>
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="tel" id="phoneNumber" name="phoneNumber" required>
+    <br>
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" name="email" required>
+    <br>
+    <label for="confirmEmail">Confirm Email Address:</label>
+    <input type="email" id="confirmEmail" name="confirmEmail" required>
+    <br>
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" required>
+    <br>
+    <label for="clientType">Client's Job:</label>
+    <select id="clientType" name="clientType" required>
+      <option value="">Costumer source of income</option>
+      <option value="frontend">Contract Jobs</option>
+      <option value="backend">Self employeement</option>
+      <option value="fullstack">Civil servant</option>
+    </select>
+    <br>
+    <label for="webTechnologies">Type of cars you always need:</label>
+    <select id="webTechnologies" name="webTechnologies" multiple required>
+      <option value="html">Twin cab</option>
+      <option value="css">Cheap cars</option>
+      <option value="javascript">Luxury cars</option>
+      <!-- Add more technology options -->
+    </select>
+    <br>
+    <label for="mailingList">Subscribe to Mailing List:</label>
+    <input type="checkbox" id="mailingList" name="mailingList">
+    <br>
+    <label for="termsConditions">Accept Terms & Conditions:</label>
+    <input type="checkbox" id="termsConditions" name="termsConditions" required>
+    <a href="aboutus.html#tc" target="_blank">terms & conditions</a>
+    <br>
+    <div class="g-recaptcha" data-sitekey="6LfDx68pAAAAAH85r_Q8bxdd1NMO9w4GMC3DIufU"></div>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+      var response = grecaptcha.getResponse();
+      if (response.length === 0) {
+        event.preventDefault();
+        alert("Please complete the CAPTCHA verification.");
+      }
+    });
+  </script>
+</body>
+</html>
